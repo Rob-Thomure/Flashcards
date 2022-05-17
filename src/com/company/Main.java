@@ -1,12 +1,10 @@
 package com.company;
 
-import java.util.Scanner;
+// Stage 3 - Practice collections and loops: create a new card for the program to play with you.
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Flashcard flashcard = new Flashcard(scanner.nextLine(), scanner.nextLine());
-        System.out.println(scanner.nextLine().equals(flashcard.getDefinition()) ?
-                "Your answer is right" : "Your answer is wrong");
+        UserInterface userInterface = new UserInterface();
+        userInterface.startGame();
     }
 }
