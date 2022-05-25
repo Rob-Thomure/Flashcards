@@ -1,34 +1,36 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Flashcards {
-    private final int numFlashcards;
-    private final List<Flashcard> flashcards;
+    private final Map<String, String> flashcards;
 
-    public Flashcards(int numFlashcards) {
-        this.numFlashcards = numFlashcards;
-        this.flashcards = new ArrayList<>();
+    public Flashcards() {
+        this.flashcards = new LinkedHashMap<>();
     }
 
-    public void addFlashcard(Flashcard flashcard) {
-        flashcards.add(flashcard);
+    public void addFlashcard(String term, String definition) {
+        flashcards.put(term, definition);
     }
 
-    public int getNumFlashcards() {
-        return numFlashcards;
+    public String removeFlashcard(String term) {
+        return flashcards.remove(term);
     }
 
-    public List<Flashcard> getFlashcards() {
+    public boolean isDuplicateTerm(String term) {
+        return flashcards.containsKey(term);
+    }
+
+    public boolean isDuplicateDefinition(String definition) {
+        return flashcards.containsValue(definition);
+    }
+
+    public int getFlashcardsCount() {
+        return flashcards.size();
+    }
+
+    public Map<String, String> getFlashcards() {
         return flashcards;
-    }
-
-    @Override
-    public String toString() {
-        return "Flashcards{" +
-                "numFlashcards=" + numFlashcards +
-                ", flashcards=" + flashcards +
-                '}';
     }
 }
