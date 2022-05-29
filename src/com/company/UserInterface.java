@@ -1,12 +1,38 @@
 package com.company;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class UserInterface {
-    private final Flashcards flashcards = new Flashcards();
-    private final Log log = new Log();
+    private final Flashcards flashcards;
+    private final Log log;
+    private final File exportFile;
+
+    public UserInterface(String mode, File file) {
+        this.flashcards = new Flashcards();
+        this.log = new Log();
+        if ("-import".equals(mode)) {
+            this.exportFile = null;
+            importCards(String.valueOf(file));
+        } else {
+            this.exportFile = file;
+        }
+    }
+
+    public UserInterface(File importfile, File exportFile) {
+        this.flashcards = new Flashcards();
+        this.log = new Log();
+        importCards(String.valueOf(importfile));
+        this.exportFile = exportFile;
+    }
+
+    public UserInterface() {
+        this.flashcards = new Flashcards();
+        this.log = new Log();
+        this.exportFile = null;
+    }
 
     public void startGame() {
         boolean quit = false;
@@ -29,6 +55,9 @@ public class UserInterface {
                     break;
                 case "exit":
                     quit = true;
+                    if (null != exportFile) {
+                        exportCards(String.valueOf(this.exportFile));
+                    }
                     System.out.println("Bye bye!");
                     break;
                 case "log":
@@ -121,9 +150,27 @@ public class UserInterface {
         }
     }
 
+    private void importCards(String file) {
+        int numImported = flashcards.importCards(file);
+        if (numImported >= 0) {
+            printOutput(String.format("%d cards have been loaded.%n", numImported));
+        } else {
+            printOutput("File not found.\n");
+        }
+    }
+
     private void exportCards() {
         printOutput("File Name:");
         int numSaved = flashcards.exportCards(readInput());
+        if (numSaved >= 0) {
+            printOutput(String.format("%d cards have been saved.%n", numSaved));
+        } else {
+            printOutput("File not found.\n");
+        }
+    }
+
+    private void exportCards(String file) {
+        int numSaved = flashcards.exportCards(file);
         if (numSaved >= 0) {
             printOutput(String.format("%d cards have been saved.%n", numSaved));
         } else {
